@@ -1,0 +1,129 @@
+blueprint:
+  name: Device Health Report
+  description: Send daily email report of low battery and unavailable devices
+  domain: automation
+  source_url: https://github.com/YOUR_USERNAME/ha-device-health-report/blob/main/device_health_report.yaml
+  input:
+    report_time:
+      name: Report Time
+      description: When to send the daily report
+      default: "09:00:00"
+      selector:
+        time:
+    
+    battery_threshold:
+      name: Battery Threshold (%)
+      description: Alert when battery drops below this level
+      default: 20
+      selector:
+        number:
+          min: 5
+          max: 50
+          unit_of_measurement: "%"
+    
+    notify_service:
+      name: Notification Service
+      description: Email notification service (e.g., notify.email or notify.gmail)
+      selector:
+        text:
+    
+    send_only_if_issues:
+      name: Send Only If Issues Found
+      description: Skip email if no low batteries or unavailable devices
+      default: true
+      selector:
+        boolean:
+
+trigger:
+  - platform: time
+    at: !input report_time
+
+condition:
+  - condition: template
+    value_template: >
+      {% set send_always = not (send_only_if_issues | default(true)) %}
+      {% set low_battery = states.sensor 
+         | selectattr('attributes.device_class', 'defined')
+         | selectattr('attributes.device_class', 'eq', 'battery')
+         | selectattr('state', 'is_number')
+         | selectattr('state', 'lt', battery_threshold | int)
+         | list | count > 0 %}
+      {% set unavailable = states 
+         | selectattr('state', 'in', ['unavailable', 'unknown'])
+         | rejectattr('domain', 'in', ['group', 'automation', 'script', 'scene'])
+         | list | count > 0 %}
+      {{ send_always or low_battery or unavailable }}
+
+action:
+  - service: !input notify_service
+    data:
+      title: "🏠 Home Assistant Device Health Report"
+      message: |
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+            .low-battery { color: #ff9800; }
+            .unavailable { color: #f44336; }
+            ul { list-style-type: none; padding-left: 0; }
+            li { padding: 8px; margin: 5px 0; background: #f5f5f5; border-radius: 4px; }
+            .battery-level { font-weight: bold; float: right; }
+            .no-issues { color: #4caf50; font-size: 18px; }
+          </style>
+        </head>
+        <body>
+          <h1>Device Health Report</h1>
+          <p>Report generated: {{ now().strftime('%B %d, %Y at %I:%M %p') }}</p>
+          
+          <h2 class="low-battery">⚠️ Low Battery Devices</h2>
+          {% set low_batteries = states.sensor 
+             | selectattr('attributes.device_class', 'defined')
+             | selectattr('attributes.device_class', 'eq', 'battery')
+             | selectattr('state', 'is_number')
+             | selectattr('state', 'lt', battery_threshold | int)
+             | list %}
+          
+          {% if low_batteries | count > 0 %}
+            <ul>
+            {% for device in low_batteries | sort(attribute='state') %}
+              <li>
+                {{ device.name }}
+                <span class="battery-level">{{ device.state }}%</span>
+              </li>
+            {% endfor %}
+            </ul>
+          {% else %}
+            <p class="no-issues">✓ All devices have sufficient battery</p>
+          {% endif %}
+          
+          <h2 class="unavailable">❌ Unavailable Devices</h2>
+          {% set unavailable = states 
+             | selectattr('state', 'in', ['unavailable', 'unknown'])
+             | rejectattr('domain', 'in', ['group', 'automation', 'script', 'scene'])
+             | list %}
+          
+          {% if unavailable | count > 0 %}
+            <ul>
+            {% for device in unavailable | sort(attribute='name') %}
+              <li>{{ device.name }} ({{ device.entity_id }})</li>
+            {% endfor %}
+            </ul>
+          {% else %}
+            <p class="no-issues">✓ All devices are responding</p>
+          {% endif %}
+          
+          <hr>
+          <p style="color: #888; font-size: 12px;">
+            Total devices monitored: {{ states | list | count }}<br>
+            Battery threshold: {{ battery_threshold }}%
+          </p>
+        </body>
+        </html>
+
+variables:
+  battery_threshold: !input battery_threshold
+  send_only_if_issues: !input send_only_if_issues
+
+mode: single
