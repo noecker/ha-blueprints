@@ -10,6 +10,7 @@ from homeassistant.helpers import config_validation as cv
 
 from .api import async_register_websocket_handlers
 from .view import async_register_panel
+from .frontend import async_register_static_paths
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,8 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the Device Health Exclusions Manager component."""
     # Register WebSocket API
     async_register_websocket_handlers(hass)
+    # Register static paths for frontend assets
+    await async_register_static_paths(hass)
     return True
 
 
