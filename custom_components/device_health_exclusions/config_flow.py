@@ -30,7 +30,7 @@ def get_problem_devices(hass: HomeAssistant, battery_threshold: int = 20) -> dic
                 battery_level = float(state.state)
                 if battery_level < battery_threshold:
                     problem_devices[state.entity_id] = (
-                        f"{state.name} ({state.state}% battery)"
+                        f"{state.name} - {state.entity_id} ({state.state}% battery)"
                     )
             except (ValueError, TypeError):
                 pass
@@ -43,7 +43,7 @@ def get_problem_devices(hass: HomeAssistant, battery_threshold: int = 20) -> dic
             and state.domain not in excluded_domains
             and state.entity_id not in problem_devices
         ):
-            problem_devices[state.entity_id] = f"{state.name} ({state.state})"
+            problem_devices[state.entity_id] = f"{state.name} - {state.entity_id} ({state.state})"
 
     return problem_devices
 
