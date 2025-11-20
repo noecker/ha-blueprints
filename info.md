@@ -65,6 +65,6 @@ Need to update your exclusions? Easy!
 
 ## Support
 
-- [Full Documentation](https://github.com/YOUR_USERNAME/ha-customizations)
-- [Report Issues](https://github.com/YOUR_USERNAME/ha-customizations/issues)
-- [Quick Start Guide](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/QUICKSTART.md)
+- [Full Documentation](https://github.com/noecker/ha-device-health-monitoring)
+- [Report Issues](https://github.com/noecker/ha-device-health-monitoring/issues)
+- [Quick Start Guide](https://github.com/noecker/ha-device-health-monitoring/blob/main/QUICKSTART.md)

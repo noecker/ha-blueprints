@@ -52,5 +52,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proper async/await implementation
 - Full translation support
 
-[Unreleased]: https://github.com/YOUR_USERNAME/ha-customizations/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/YOUR_USERNAME/ha-customizations/releases/tag/v1.0.0
+[Unreleased]: https://github.com/noecker/ha-device-health-monitoring/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/noecker/ha-device-health-monitoring/releases/tag/v1.0.0

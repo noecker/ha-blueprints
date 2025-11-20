@@ -2,7 +2,7 @@ blueprint:
   name: Device Health Report
   description: Send daily email report of low battery and unavailable devices
   domain: automation
-  source_url: https://github.com/YOUR_USERNAME/ha-device-health-report/blob/main/device_health_report.yaml
+  source_url: https://github.com/noecker/ha-device-health-report/blob/main/device_health_report.yaml
   input:
     report_time:
       name: Report Time

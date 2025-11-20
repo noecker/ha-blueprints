@@ -13,7 +13,7 @@ Get this professional Home Assistant integration published and available to user
 ### Step 1: Initialize Git Repository
 
 ```bash
-cd /Users/tony/Projects/ha-customizations
+cd /Users/tony/Projects/ha-device-health-monitoring
 
 # Initialize if not done
 git init
@@ -33,7 +33,7 @@ git commit -m "Initial release: Device Health Monitoring system
 ### Step 2: Create GitHub Repository
 
 1. Go to https://github.com/new
-2. Repository name: `ha-customizations` (or your preferred name)
+2. Repository name: `ha-device-health-monitoring` (or your preferred name)
 3. Description: "Home Assistant Device Health Monitoring with exclusion management UI"
 4. **Public** (required for HACS)
 5. Don't initialize with README (we have one)
@@ -43,7 +43,7 @@ git commit -m "Initial release: Device Health Monitoring system
 
 ```bash
 # Add remote
-git remote add origin https://github.com/YOUR_USERNAME/ha-customizations.git
+git remote add origin https://github.com/noecker/ha-device-health-monitoring.git
 
 # Push
 git branch -M main
@@ -106,23 +106,23 @@ First release! 🎉
 ## Installation
 
 ### Via HACS (Recommended)
-See [INSTALLATION.md](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/INSTALLATION.md#method-1-hacs-recommended)
+See [INSTALLATION.md](https://github.com/noecker/ha-device-health-monitoring/blob/main/INSTALLATION.md#method-1-hacs-recommended)
 
 ### Via Install Script
 ```bash
-git clone https://github.com/YOUR_USERNAME/ha-customizations.git
-cd ha-customizations
+git clone https://github.com/noecker/ha-device-health-monitoring.git
+cd ha-device-health-monitoring
 ./install.sh
 ```
 
 ### Manual
-Download the ZIP and follow [INSTALLATION.md](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/INSTALLATION.md#method-3-manual-installation)
+Download the ZIP and follow [INSTALLATION.md](https://github.com/noecker/ha-device-health-monitoring/blob/main/INSTALLATION.md#method-3-manual-installation)
 
 ## Documentation
 
-- [Quick Start](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/QUICKSTART.md)
-- [Installation Guide](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/INSTALLATION.md)
-- [Complete Documentation](https://github.com/YOUR_USERNAME/ha-customizations/blob/main/INSTALLATION.md)
+- [Quick Start](https://github.com/noecker/ha-device-health-monitoring/blob/main/QUICKSTART.md)
+- [Installation Guide](https://github.com/noecker/ha-device-health-monitoring/blob/main/INSTALLATION.md)
+- [Complete Documentation](https://github.com/noecker/ha-device-health-monitoring/blob/main/INSTALLATION.md)
 
 ## What's Included
 
@@ -167,7 +167,7 @@ Users can add your repo as a custom HACS repository:
 1. User opens HACS
 2. Goes to Integrations
 3. Clicks ⋮ menu → Custom repositories
-4. Adds: `https://github.com/YOUR_USERNAME/ha-customizations`
+4. Adds: `https://github.com/noecker/ha-device-health-monitoring`
 5. Category: Integration
 
 #### Option B: Official HACS (Takes time)
@@ -214,7 +214,7 @@ I've created a device health monitoring solution with a unique visual UI for man
 - Automated install scripts
 - Multiple install methods
 
-Repository: https://github.com/YOUR_USERNAME/ha-customizations
+Repository: https://github.com/noecker/ha-device-health-monitoring
 
 Would love feedback and contributions!
 ```

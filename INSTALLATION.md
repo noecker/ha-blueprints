@@ -36,7 +36,7 @@ The Device Health Exclusions Manager provides a user-friendly interface to:
    - Click on "Integrations"
    - Click the three dots (⋮) in the top right
    - Select "Custom repositories"
-   - Add this repository URL: `https://github.com/YOUR_USERNAME/ha-customizations`
+   - Add this repository URL: `https://github.com/noecker/ha-device-health-monitoring`
    - Category: Integration
    - Click "Add"
 
@@ -49,7 +49,7 @@ The Device Health Exclusions Manager provides a user-friendly interface to:
    - The blueprint is included in the repository
    - Go to Settings → Automations & Scenes
    - Click "Blueprints" tab
-   - Import from: `https://github.com/YOUR_USERNAME/ha-customizations/blob/main/device_health_report.yaml`
+   - Import from: `https://github.com/noecker/ha-device-health-monitoring/blob/main/device_health_report.yaml`
 
 4. **Configure Integration**
    - Settings → Devices & Services → Add Integration
@@ -72,8 +72,8 @@ The Device Health Exclusions Manager provides a user-friendly interface to:
 
 ```bash
 # Clone or download the repository
-git clone https://github.com/YOUR_USERNAME/ha-customizations.git
-cd ha-customizations
+git clone https://github.com/noecker/ha-device-health-monitoring.git
+cd ha-device-health-monitoring
 
 # Run the installer
 ./install.sh
@@ -83,8 +83,8 @@ cd ha-customizations
 
 ```bash
 # Clone or download the repository
-git clone https://github.com/YOUR_USERNAME/ha-customizations.git
-cd ha-customizations
+git clone https://github.com/noecker/ha-device-health-monitoring.git
+cd ha-device-health-monitoring
 
 # Run Python installer
 python3 install.py
@@ -114,7 +114,7 @@ python3 install.py
 
 1. **Download the repository**
    ```bash
-   wget https://github.com/YOUR_USERNAME/ha-customizations/archive/refs/heads/main.zip
+   wget https://github.com/noecker/ha-device-health-monitoring/archive/refs/heads/main.zip
    unzip main.zip
    ```
 
@@ -160,7 +160,7 @@ python3 install.py
 2. **Or import via UI**
    - Settings → Automations & Scenes → Blueprints
    - Click "Import Blueprint"
-   - Paste: `https://github.com/YOUR_USERNAME/ha-customizations/blob/main/device_health_report.yaml`
+   - Paste: `https://github.com/noecker/ha-device-health-monitoring/blob/main/device_health_report.yaml`
 
 ✅ **Done!** Continue to [Configuration](#configuration)
 
@@ -271,7 +271,7 @@ chmod -R 755 /config/custom_components/device_health_exclusions/
 
 ### Via Script
 ```bash
-cd ha-customizations
+cd ha-device-health-monitoring
 git pull
 ./install.sh  # or python3 install.py
 ```
@@ -308,7 +308,7 @@ rm /config/blueprints/automation/device_health_report.yaml
 
 - 📖 [Quick Start Guide](QUICKSTART.md)
 - 📚 [Maintainer Guide](GETTING_STARTED_AS_MAINTAINER.md)
-- 🐛 [Report Issues](https://github.com/YOUR_USERNAME/ha-customizations/issues)
+- 🐛 [Report Issues](https://github.com/noecker/ha-device-health-monitoring/issues)
 
 ---
 

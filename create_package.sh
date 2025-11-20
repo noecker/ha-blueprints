@@ -86,7 +86,7 @@ Documentation:
 
 Support:
 --------
-GitHub: https://github.com/YOUR_USERNAME/ha-customizations
+GitHub: https://github.com/noecker/ha-device-health-monitoring
 EOF
 
 # Create package
