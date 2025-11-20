@@ -34,6 +34,14 @@ blueprint:
       selector:
         boolean:
 
+    excluded_entities:
+      name: Excluded Entities
+      description: Entities to exclude from the report (optional)
+      default: []
+      selector:
+        entity:
+          multiple: true
+
 trigger:
   - platform: time
     at: !input report_time
@@ -42,18 +50,20 @@ condition:
   - condition: template
     value_template: >
       {% set send_always = not (send_only_if_issues | default(true)) %}
+      {% set excluded = excluded_entities | default([]) %}
       {% set low_battery_count = namespace(value=0) %}
-      {% for device in states.sensor 
+      {% for device in states.sensor
          | selectattr('attributes.device_class', 'defined')
          | selectattr('attributes.device_class', 'eq', 'battery') %}
-        {% if device.state not in ['unavailable', 'unknown'] and device.state | float(0) < battery_threshold | int %}
+        {% if device.entity_id not in excluded and device.state not in ['unavailable', 'unknown'] and device.state | float(0) < battery_threshold | int %}
           {% set low_battery_count.value = low_battery_count.value + 1 %}
         {% endif %}
       {% endfor %}
       {% set low_battery = low_battery_count.value > 0 %}
-      {% set unavailable = states 
+      {% set unavailable = states
          | selectattr('state', 'in', ['unavailable', 'unknown'])
          | rejectattr('domain', 'in', ['group', 'automation', 'script', 'scene'])
+         | reject('in', excluded)
          | list | count > 0 %}
       {{ send_always or low_battery or unavailable }}
 
@@ -83,11 +93,12 @@ action:
             <p>Report generated: {{ now().strftime('%B %d, %Y at %I:%M %p') }}</p>
 
             <h2 class="low-battery">⚠️ Low Battery Devices</h2>
+            {% set excluded = excluded_entities | default([]) %}
             {% set low_batteries = namespace(devices=[]) %}
             {% for device in states.sensor
                | selectattr('attributes.device_class', 'defined')
                | selectattr('attributes.device_class', 'eq', 'battery') %}
-              {% if device.state not in ['unavailable', 'unknown'] and device.state | float(0) < battery_threshold | int %}
+              {% if device.entity_id not in excluded and device.state not in ['unavailable', 'unknown'] and device.state | float(0) < battery_threshold | int %}
                 {% set low_batteries.devices = low_batteries.devices + [device] %}
               {% endif %}
             {% endfor %}
@@ -109,6 +120,7 @@ action:
             {% set unavailable = states
                | selectattr('state', 'in', ['unavailable', 'unknown'])
                | rejectattr('domain', 'in', ['group', 'automation', 'script', 'scene'])
+               | reject('in', excluded)
                | list %}
 
             {% if unavailable | count > 0 %}
@@ -132,5 +144,6 @@ action:
 variables:
   battery_threshold: !input battery_threshold
   send_only_if_issues: !input send_only_if_issues
+  excluded_entities: !input excluded_entities
 
 mode: single
