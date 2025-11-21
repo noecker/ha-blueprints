@@ -1,5 +1,5 @@
 import { LitElement, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { panelStyles } from './styles/panel-styles';
 import { ProblemDevice, FilterMode, HomeAssistant, ExclusionSettings } from './types';
 import {
@@ -15,6 +15,9 @@ import './components/exclusions-table';
 
 @customElement('device-health-panel')
 export class DeviceHealthPanel extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+  @property({ type: Boolean, reflect: true }) public narrow = false;
+
   @state() private _devices: ProblemDevice[] = [];
   @state() private _settings: ExclusionSettings = {
     excluded_entities: [],
@@ -24,8 +27,6 @@ export class DeviceHealthPanel extends LitElement {
   @state() private _filterMode: FilterMode = 'all';
   @state() private _searchQuery = '';
   @state() private _loading = true;
-
-  public hass!: HomeAssistant;
 
   static styles = panelStyles;
 
@@ -37,6 +38,14 @@ export class DeviceHealthPanel extends LitElement {
   render() {
     if (this._loading) {
       return html`
+        <div class="app-toolbar">
+          <button class="menu-button" @click=${this._toggleMenu} title="Menu">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+            </svg>
+          </button>
+          <div class="app-title">Device Health</div>
+        </div>
         <div class="loading">
           <div>Loading devices...</div>
         </div>
@@ -46,11 +55,17 @@ export class DeviceHealthPanel extends LitElement {
     const stats = this._calculateStats();
 
     return html`
-      <div class="header">
-        <h1>Device Health Exclusions Manager</h1>
+      <div class="app-toolbar">
+        <button class="menu-button" @click=${this._toggleMenu} title="Menu">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+          </svg>
+        </button>
+        <div class="app-title">Device Health</div>
       </div>
 
-      <div class="stats">
+      <div class="content">
+        <div class="stats">
         <div class="stat-card">
           <div class="stat-value">${stats.total}</div>
           <div class="stat-label">Problem Devices</div>
@@ -65,23 +80,33 @@ export class DeviceHealthPanel extends LitElement {
         </div>
       </div>
 
-      <filter-toolbar
-        .filterMode=${this._filterMode}
-        .searchQuery=${this._searchQuery}
-        .batteryThreshold=${this._settings.battery_threshold}
-        @filter-changed=${this._handleFilterChanged}
-        @search-changed=${this._handleSearchChanged}
-        @threshold-changed=${this._handleThresholdChanged}
-      ></filter-toolbar>
+        <filter-toolbar
+          .filterMode=${this._filterMode}
+          .searchQuery=${this._searchQuery}
+          .batteryThreshold=${this._settings.battery_threshold}
+          @filter-changed=${this._handleFilterChanged}
+          @search-changed=${this._handleSearchChanged}
+          @threshold-changed=${this._handleThresholdChanged}
+        ></filter-toolbar>
 
-      <exclusions-table
-        .devices=${this._devices}
-        .filterMode=${this._filterMode}
-        .searchQuery=${this._searchQuery}
-        @toggle-exclusion=${this._handleToggleExclusion}
-        @toggle-device-exclusion=${this._handleToggleDeviceExclusion}
-      ></exclusions-table>
+        <exclusions-table
+          .devices=${this._devices}
+          .filterMode=${this._filterMode}
+          .searchQuery=${this._searchQuery}
+          @toggle-exclusion=${this._handleToggleExclusion}
+          @toggle-device-exclusion=${this._handleToggleDeviceExclusion}
+        ></exclusions-table>
+      </div>
     `;
+  }
+
+  private _toggleMenu() {
+    this.dispatchEvent(
+      new CustomEvent('hass-toggle-menu', {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private async _loadData() {
