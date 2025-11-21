@@ -3,10 +3,61 @@ import { css } from 'lit';
 export const panelStyles = css`
   :host {
     display: block;
-    padding: 16px;
     background-color: var(--primary-background-color);
     color: var(--primary-text-color);
     font-family: var(--paper-font-body1_-_font-family);
+    height: 100%;
+  }
+
+  /* App toolbar for mobile navigation */
+  .app-toolbar {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 4px;
+    background-color: var(--app-header-background-color, var(--primary-color));
+    color: var(--app-header-text-color, var(--text-primary-color));
+    box-sizing: border-box;
+  }
+
+  .menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    border-radius: 50%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .menu-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-button svg {
+    display: block;
+  }
+
+  .app-title {
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .content {
+    padding: 16px;
+    overflow-y: auto;
+    height: calc(100% - 56px);
+    box-sizing: border-box;
   }
 
   .header {
